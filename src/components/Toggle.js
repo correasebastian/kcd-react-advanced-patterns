@@ -7,25 +7,31 @@ const TOGGLE_CONTEXT = '__toggle__'
 
 
 export function withToggle(Component) {
-    function Wrapper(props, context) {
-      const toggleContext = context[TOGGLE_CONTEXT]
-      return (
-        <Component
-          {...props}
-          toggle={toggleContext}
-        />
-      )
-    }
-    Wrapper.contextTypes = {
-      [TOGGLE_CONTEXT]: object.isRequired,
-    }
-    return Wrapper
+  function Wrapper(props, context) {
+    const toggleContext = context[TOGGLE_CONTEXT]
+    return (
+      <Component
+        {...props}
+        toggle={toggleContext}
+      />
+    )
   }
- export const MyToggle = withToggle(({ toggle:{toggle, on}}) => (
+  Wrapper.contextTypes = {
+    [TOGGLE_CONTEXT]: object.isRequired,
+  }
+  Wrapper.displayName = `withToggle(${Component.displayName ||
+    Component.name})`
+  return Wrapper
+}
+
+
+  const MyToggle = ({toggle: {on, toggle}}) => (
     <button onClick={toggle}>
       {on ? 'on' : 'off'}
     </button>
-  ))
+  )
+  
+  export const MyToggleWrapper = withToggle(MyToggle)
 
   export const MyEventComponent = withToggle(
     function MyEventComponent({toggle, on, event}) {
@@ -37,33 +43,25 @@ export function withToggle(Component) {
       ) : null
     },
   )
-
-  const ToggleOn = withToggle(
-    ({children, toggle: {on}}) => {
-      return on ? children : null
-    },
-  )
-  const ToggleOff = withToggle(
-    ({children, toggle: {on}}) => {
-      return on ? null : children
-    },
-  )
-  const ToggleButton = withToggle(
-    ({toggle: {on, toggle}, ...props}) => {
-      return (
-        <Switch
-          on={on}
-          onClick={toggle}
-          {...props}
-        />
-      )
-    },
-  )
+  const ToggleOn = ({children, toggle: {on}}) => {
+    return on ? children : null
+  }
+  const ToggleOff = ({children, toggle: {on}}) => {
+    return on ? null : children
+  }
+  const ToggleButton = ({
+    toggle: {on, toggle},
+    ...props
+  }) => {
+    return (
+      <Switch on={on} onClick={toggle} {...props} />
+    )
+  }
 
 export default class Toggle extends Component {
-    static On = ToggleOn
-    static Off = ToggleOff
-    static Button = ToggleButton
+  static On = withToggle(ToggleOn)
+  static Off = withToggle(ToggleOff)
+  static Button = withToggle(ToggleButton)
 
     static defaultProps = {onToggle: () => {}}
 

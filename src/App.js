@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Toggle, { MyToggle, MyEventComponent } from "./components/Toggle";
+import Toggle, {  MyEventComponent, MyToggleWrapper } from "./components/Toggle";
 
 function App() {
   return (
@@ -11,8 +11,8 @@ function App() {
         <Toggle.Off>The button is off</Toggle.Off>
         <Toggle.Button/>
       </div>
-      <MyToggle>
-        </MyToggle>
+      <MyToggleWrapper>
+        </MyToggleWrapper>
         <hr/>
         <MyEventComponent
         event="onClick"
