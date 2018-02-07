@@ -5,11 +5,15 @@ import { object } from "prop-types";
 
 const TOGGLE_CONTEXT = '__toggle__'
 
-function withToggle(Component) {
+
+export function withToggle(Component) {
     function Wrapper(props, context) {
       const toggleContext = context[TOGGLE_CONTEXT]
       return (
-        <Component {...toggleContext} {...props} />
+        <Component
+          {...props}
+          toggle={toggleContext}
+        />
       )
     }
     Wrapper.contextTypes = {
@@ -17,21 +21,35 @@ function withToggle(Component) {
     }
     return Wrapper
   }
-  
- export const MyToggle = withToggle(({on, toggle}) => (
+ export const MyToggle = withToggle(({ toggle:{toggle, on}}) => (
     <button onClick={toggle}>
       {on ? 'on' : 'off'}
     </button>
   ))
 
-const ToggleOn = withToggle(({children, on}) => {
-    return on ? children : null
-  })
-  const ToggleOff = withToggle(({children, on}) => {
-    return on ? null : children
-  })
+  export const MyEventComponent = withToggle(
+    function MyEventComponent({toggle, on, event}) {
+      const props = {[event]: on}
+      return toggle.on ? (
+        <button {...props}>
+          The {event} event
+        </button>
+      ) : null
+    },
+  )
+
+  const ToggleOn = withToggle(
+    ({children, toggle: {on}}) => {
+      return on ? children : null
+    },
+  )
+  const ToggleOff = withToggle(
+    ({children, toggle: {on}}) => {
+      return on ? null : children
+    },
+  )
   const ToggleButton = withToggle(
-    ({on, toggle, ...props}) => {
+    ({toggle: {on, toggle}, ...props}) => {
       return (
         <Switch
           on={on}

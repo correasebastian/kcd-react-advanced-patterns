@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Toggle, { MyToggle } from "./components/Toggle";
+import Toggle, { MyToggle, MyEventComponent } from "./components/Toggle";
 
 function App() {
   return (
@@ -13,6 +13,11 @@ function App() {
       </div>
       <MyToggle>
         </MyToggle>
+        <hr/>
+        <MyEventComponent
+        event="onClick"
+        on={e => alert(e.type)}
+      />
     </Toggle>
   )
 }
