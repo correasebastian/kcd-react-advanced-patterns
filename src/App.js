@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Toggle from "./components/Toggle";
+import Toggle, { MyToggle } from "./components/Toggle";
 
 function App() {
   return (
@@ -11,6 +11,8 @@ function App() {
         <Toggle.Off>The button is off</Toggle.Off>
         <Toggle.Button/>
       </div>
+      <MyToggle>
+        </MyToggle>
     </Toggle>
   )
 }
