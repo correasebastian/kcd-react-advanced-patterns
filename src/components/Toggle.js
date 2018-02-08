@@ -12,6 +12,10 @@ export default class Toggle extends React.Component {
     return this.props.render({
       on: this.state.on,
       toggle: this.toggle,
+      togglerProps: {
+        'aria-expanded': this.state.on,
+        onClick: this.toggle,
+      }
     })
   }
 }
