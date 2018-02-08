@@ -2,7 +2,8 @@ import React from 'react';
 
 const compose = (...fns) => (...args) =>
 fns.forEach(fn => fn && fn(...args))
-export default class Toggle extends React.Component {
+export default 
+class Toggle extends React.Component {
   static defaultProps = {
     defaultOn: false,
     onToggle: () => {},
@@ -11,11 +12,13 @@ export default class Toggle extends React.Component {
   initialState = {on: this.props.defaultOn}
   state = this.initialState
   reset = () => {
-    this.isOnControlled()
-    ? this.props.onReset(!this.props.on)
-    : this.setState(this.initialState, () =>
+    if (this.isOnControlled()) {
+      this.props.onReset(!this.props.on)
+    } else {
+      this.setState(this.initialState, () =>
         this.props.onReset(this.state.on),
       )
+    }
   }
   toggle = () => {
     if (this.isOnControlled()) {
@@ -48,3 +51,5 @@ export default class Toggle extends React.Component {
     })
   }
 }
+
+
