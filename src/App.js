@@ -2,24 +2,25 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Toggle, {  MyEventComponent, MyToggleWrapper } from "./components/Toggle";
+import Switch from "./components/Switch";
+import MyToggle from "./components/MyToggle";
+
 
 function App() {
   return (
-    <Toggle onToggle={on => console.log('toggle', on)} >
-      <Toggle.On>The button is on</Toggle.On>
-      <div> 
-        <Toggle.Off>The button is off</Toggle.Off>
-        <Toggle.Button/>
-      </div>
-      <MyToggleWrapper>
-        </MyToggleWrapper>
-        <MyToggleWrapper.ToggleMessage />
-        <hr/>
-        <MyEventComponent
-        event="onClick"
-        on={e => alert(e.type)}
-      />
-    </Toggle>
+    <Toggle
+      onToggle={on => console.log('toggle', on)}
+      render={({on, toggle}) => (
+        <div>
+          {on
+            ? 'The button is on'
+            : 'The button is off'}
+          <Switch on={on} onClick={toggle} />
+          <hr />
+          <MyToggle on={on} toggle={toggle} />
+        </div>
+      )}
+    />
   )
 }
 
