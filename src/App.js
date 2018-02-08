@@ -13,6 +13,7 @@ function App() {
       </div>
       <MyToggleWrapper>
         </MyToggleWrapper>
+        <MyToggleWrapper.ToggleMessage />
         <hr/>
         <MyEventComponent
         event="onClick"

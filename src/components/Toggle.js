@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Switch from "./Switch";
+
+import hoistNonReactStatics from "hoist-non-react-statics";
 import { object } from "prop-types";
 
 
@@ -21,16 +23,26 @@ export function withToggle(Component) {
   }
   Wrapper.displayName = `withToggle(${Component.displayName ||
     Component.name})`
-  return Wrapper
+  return hoistNonReactStatics(Wrapper, Component)
 }
 
 
-  const MyToggle = ({toggle: {on, toggle}}) => (
-    <button onClick={toggle}>
-      {on ? 'on' : 'off'}
-    </button>
+class MyToggle extends React.Component {
+  static ToggleMessage = withToggle(
+    ({toggle: {on}}) =>
+      on
+        ? 'Warning: The button is toggled on'
+        : null,
   )
-  
+  render() {
+    const {toggle: {on, toggle}} = this.props
+    return (
+      <button onClick={toggle}>
+        {on ? 'on' : 'off'}
+      </button>
+    )
+  }
+}
   export const MyToggleWrapper = withToggle(MyToggle)
 
   export const MyEventComponent = withToggle(
