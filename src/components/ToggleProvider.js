@@ -6,13 +6,11 @@ export class ToggleProvider extends Component {
     static contextName = '__toggle__'
     static Renderer = class extends Component {
       static childContextTypes = {
-        [ToggleProvider.contextName]:
-          PropTypes.object.isRequired,
+        [ToggleProvider.contextName]: PropTypes.object.isRequired,
       }
       getChildContext() {
         return {
-          [ToggleProvider.contextName]: this.props
-            .toggle,
+          [ToggleProvider.contextName]: this.props.toggle,
         }
       }
       render() {
@@ -20,10 +18,7 @@ export class ToggleProvider extends Component {
       }
     }
     render() {
-      const {
-        children,
-        ...remainingProps
-      } = this.props
+      const { children, ...remainingProps } = this.props
       return (
         <Toggle
           {...remainingProps}
