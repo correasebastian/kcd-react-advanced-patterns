@@ -6,27 +6,51 @@ import Switch from "./components/Switch";
 import MyToggle from "./components/MyToggle";
 
 
-function App() {
-  return (
-    <Toggle
-      defaultOn={true}
-      onToggle={on => console.log('toggle', on)}
-      onReset={on => console.log('reset', on)}
-      render={toggle => (
-        <div>
-          <Switch
-            {...toggle.getTogglerProps({
-              on: toggle.on,
-            })}
-          />
-          <hr />
-          <button onClick={() => toggle.reset()}>
-            Reset
-          </button>
-        </div>
-      )}
-    />
-  )
+class App extends React.Component {
+  initialState = {timesClicked: 0, on: false}
+  state = this.initialState
+  handleToggle = () => {
+    this.setState(({timesClicked, on}) => ({
+      timesClicked: timesClicked + 1,
+      on: timesClicked >= 4 ? false : !on,
+    }))
+  }
+  handleReset = () => {
+    this.setState(this.initialState)
+  }
+
+  render() {
+    const {timesClicked, on} = this.state
+    return (
+      <Toggle
+        on={on}
+        onToggle={this.handleToggle}
+        onReset={this.handleReset}
+        render={toggle => (
+          <div>
+            <Switch
+              {...toggle.getTogglerProps({
+                on: toggle.on,
+              })}
+            />
+            {timesClicked > 4 ? (
+              <div>
+                Whoa, you've clicked too much!
+                <br />
+                <button onClick={toggle.reset}>
+                  reset
+                </button>
+              </div>
+            ) : timesClicked > 0 ? (
+              <div>
+                Click count: {timesClicked}
+              </div>
+            ) : null}
+          </div>
+        )}
+      />
+    )
+  }
 }
 
 export default App;

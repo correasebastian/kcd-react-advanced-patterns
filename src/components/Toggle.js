@@ -10,15 +10,23 @@ export default class Toggle extends React.Component {
   }
   initialState = {on: this.props.defaultOn}
   state = this.initialState
-  reset = () =>
-    this.setState(this.initialState, () =>
-      this.props.onReset(this.state.on),
-    )
-  toggle = () =>
-    this.setState(
-      ({on}) => ({on: !on}),
-      () => this.props.onToggle(this.state.on),
-    )
+  reset = () => {
+    this.isOnControlled()
+    ? this.props.onReset(!this.props.on)
+    : this.setState(this.initialState, () =>
+        this.props.onReset(this.state.on),
+      )
+  }
+  toggle = () => {
+    if (this.isOnControlled()) {
+      this.props.onToggle(!this.props.on)
+    } else {
+      this.setState(
+        ({on}) => ({on: !on}),
+        () => this.props.onToggle(this.state.on),
+      )
+    }
+  }
   getTogglerProps = (
     {onClick, ...props} = {},
   ) => ({
@@ -26,9 +34,14 @@ export default class Toggle extends React.Component {
     'aria-expanded': this.state.on,
     ...props,
   })
+  isOnControlled() {
+    return this.props.on !== undefined
+  }
   render() {
     return this.props.render({
-      on: this.state.on,
+      on: this.isOnControlled()
+        ? this.props.on
+        : this.state.on,
       toggle: this.toggle,
       reset: this.reset,
       getTogglerProps: this.getTogglerProps,
