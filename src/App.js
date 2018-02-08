@@ -9,21 +9,19 @@ import MyToggle from "./components/MyToggle";
 function App() {
   return (
     <Toggle
+      defaultOn={true}
       onToggle={on => console.log('toggle', on)}
-      render={({on, toggle, getTogglerProps}) => (
+      onReset={on => console.log('reset', on)}
+      render={toggle => (
         <div>
           <Switch
-            on={on}
-            {...getTogglerProps()}
+            {...toggle.getTogglerProps({
+              on: toggle.on,
+            })}
           />
           <hr />
-          <button
-            {...getTogglerProps({
-              onClick: () => alert('hi'),
-              id: 'hi',
-            })}
-          >
-            {on ? 'on' : 'off'}
+          <button onClick={() => toggle.reset()}>
+            Reset
           </button>
         </div>
       )}
