@@ -1,16 +1,12 @@
 import React from 'react';
-import { ConnectedToggle } from "./ToggleProvider";
+import { ConnectedToggle, withToggle } from "./ToggleProvider";
 
-function Subtitle() {
-    return (
-      <ConnectedToggle
-        render={toggle =>
-          toggle.on
-            ? '👩‍🏫 👉 🕶'
-            : 'Teachers are awesome'}
-      />
-    )
-  }
+const Subtitle = withToggle(
+  ({toggle}) =>
+    toggle.on
+      ? '👩‍🏫 👉 🕶'
+      : 'Teachers are awesome',
+)
   
   function Title() {
     return (
